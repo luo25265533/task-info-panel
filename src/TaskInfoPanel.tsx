@@ -70,6 +70,13 @@ export const TaskInfoPanel: FC<TaskInfoPanelProps> = ({
   const [previewFile, setPreviewFile] = useState<TaskFile | null>(null);
   const [isInfoCollapsed, setIsInfoCollapsed] = useState(false);
   const panelWidthClass = isInfoCollapsed ? 'w-[64px]' : 'w-[450px]';
+  const headerClass = isInfoCollapsed
+    ? 'flex items-center justify-center mb-2 relative h-8'
+    : 'flex items-center justify-between gap-2 mb-2 relative';
+  const headerTitleClass = isInfoCollapsed ? 'sr-only' : 'font-semibold text-base';
+  const headerButtonClass = isInfoCollapsed
+    ? 'text-xs px-2 py-1 rounded border border-slate-200 text-slate-700 hover:border-slate-300'
+    : 'text-xs px-2 py-1 rounded border border-slate-200 text-slate-700 hover:border-slate-300 absolute right-0 top-0';
 
   useEffect(() => {
     if (task) setLocalTask(task);
@@ -151,13 +158,13 @@ export const TaskInfoPanel: FC<TaskInfoPanelProps> = ({
   return (
     <div className={`${panelWidthClass} flex-shrink-0 ${className}`.trim()}>
       <div
-        className={`fixed inset-y-0 left-0 ${panelWidthClass} border-r border-gray-200 overflow-y-auto p-2 bg-white z-[999]`}
+        className={`fixed inset-y-0 left-0 ${panelWidthClass} border-r border-gray-200 overflow-y-auto overflow-x-hidden p-2 bg-white z-[999] transition-[width] duration-200`}
       >
-        <div className="flex items-center justify-between gap-2 mb-2 relative">
-          <div className="font-semibold text-base">图片任务信息</div>
+        <div className={headerClass}>
+          {!isInfoCollapsed && <div className={headerTitleClass}>图片任务信息</div>}
           <button
             type="button"
-            className="text-xs px-2 py-1 rounded border border-slate-200 text-slate-700 hover:border-slate-300 absolute right-0 top-0"
+            className={headerButtonClass}
             onClick={() => setIsInfoCollapsed((v) => !v)}
           >
             {isInfoCollapsed ? '展开' : '收拢'}
